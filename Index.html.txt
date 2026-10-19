@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>A Sincere Note For You 💌</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Quicksand & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --pink-soft: #ff85b3;
+      --pink-light: #ffd6e7;
+      --blue-soft: #7cc6fe;
+      --blue-light: #d8f0ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Quicksand', 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #ffe0ec 0%, #f3e7ff 48%, #d4edff 100%);
+      background-size: 200% 200%;
+      animation: gradientBreath 12s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      user-select: none;
+    }
+
+    @keyframes gradientBreath {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Ambient Glowing Blobs */
+    .ambient-blob {
+      position: fixed;
+      border-radius: 9999px;
+      filter: blur(55px);
+      z-index: 0;
+      opacity: 0.65;
+      pointer-events: none;
+    }
+
+    .blob-pink {
+      width: 280px;
+      height: 280px;
+      background: #ff9ec7;
+      top: -60px;
+      left: -60px;
+      animation: floatBlob1 9s ease-in-out infinite alternate;
+    }
+
+    .blob-blue {
+      width: 300px;
+      height: 300px;
+      background: #8fd3fe;
+      bottom: -70px;
+      right: -60px;
+      animation: floatBlob2 11s ease-in-out infinite alternate;
+    }
+
+    .blob-center {
+      width: 220px;
+      height: 220px;
+      background: #e2c6ff;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.45;
+    }
+
+    @keyframes floatBlob1 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(35px, 45px) scale(1.12); }
+    }
+
+    @keyframes floatBlob2 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-35px, -40px) scale(1.15); }
+    }
+
+    /* Glassmorphism Card */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      box-shadow:
+        0 20px 50px rgba(132, 169, 219, 0.22),
+        0 8px 25px rgba(255, 145, 190, 0.18),
+        inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Page Transition Animations */
+    .page-step {
+      display: none;
+      opacity: 0;
+      transform: translateY(18px) scale(0.97);
+      transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .page-step.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .page-step.fade-out {
+      opacity: 0;
+      transform: translateY(-16px) scale(0.96);
+    }
+
+    /* Custom Gradient Buttons */
+    .btn-pink-blue {
+      background: linear-gradient(135deg, #ff7eb3 0%, #9b8df2 52%, #64b5f6 100%);
+      box-shadow: 0 10px 25px -5px rgba(255, 126, 179, 0.5),
+                  0 6px 15px -3px rgba(100, 181, 246, 0.4);
+      transition: all 0.25s ease;
+    }
+
+    .btn-pink-blue:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px -5px rgba(255, 126, 179, 0.65),
+                  0 8px 18px -3px rgba(100, 181, 246, 0.5);
+    }
+
+    .btn-pink-blue:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .btn-soft-no {
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid #b8d8f8;
+      color: #5b7699;
+      box-shadow: 0 6px 16px rgba(140, 180, 225, 0.18);
+      transition: all 0.25s ease;
+    }
+
+    .btn-soft-no:hover {
+      background: rgba(240, 248, 255, 0.95);
+      border-color: #f4a8c8;
+      color: #6c5b7b;
+      transform: translateY(-2px);
+    }
+
+    .btn-soft-no:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    /* Floating Header Icon Animation */
+    .float-slow {
+      animation: gentleFloat 3.5s ease-in-out infinite;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+
+    /* Giant Sad Emoji Pulse & Teardrop Animation */
+    .giant-sad-emoji {
+      font-size: 6.2rem;
+      line-height: 1.1;
+      display: inline-block;
+      filter: drop-shadow(0 14px 22px rgba(108, 155, 210, 0.35));
+      animation: sadSigh 2.8s ease-in-out infinite;
+      position: relative;
+    }
+
+    @keyframes sadSigh {
+      0%, 100% { transform: scale(1) translateY(0) rotate(0deg); }
+      45% { transform: scale(1.07) translateY(-5px) rotate(-4deg); }
+      75% { transform: scale(0.96) translateY(4px) rotate(3deg); }
+    }
+
+    /* Animated Tear Drop Badge */
+    .tear-drop {
+      position: absolute;
+      right: 6px;
+      bottom: 14px;
+      font-size: 1.75rem;
+      animation: tearFall 2s ease-in infinite;
+      pointer-events: none;
+    }
+
+    @keyframes tearFall {
+      0% { opacity: 0; transform: translateY(-8px) scale(0.6); }
+      40% { opacity: 1; transform: translateY(4px) scale(1); }
+      100% { opacity: 0; transform: translateY(24px) scale(0.8); }
+    }
+
+    /* Giant Hug Emoji Animation */
+    .giant-hug-emoji {
+      font-size: 5.5rem;
+      line-height: 1.1;
+      display: inline-block;
+      filter: drop-shadow(0 14px 22px rgba(255, 133, 179, 0.38));
+      animation: warmHug 2.4s ease-in-out infinite;
+    }
+
+    @keyframes warmHug {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Subtle Quote Box for Guilt/Efforts note */
+    .guilt-box {
+      background: linear-gradient(135deg, rgba(255, 232, 242, 0.78) 0%, rgba(227, 243, 255, 0.78) 100%);
+      border: 1.5px solid rgba(255, 182, 213, 0.6);
+    }
+
+    /* Confetti & Background Canvases */
+    #bgCanvas, #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    #bgCanvas { z-index: 1; }
+    #confettiCanvas { z-index: 40; }
+  </style>
+</head>
+<body class="px-4 py-6 sm:px-6">
+
+  <!-- Ambient Soft Pink & Blue Blobs -->
+  <div class="ambient-blob blob-pink"></div>
+  <div class="ambient-blob blob-blue"></div>
+  <div class="ambient-blob blob-center"></div>
+
+  <!-- Subtle Floating Hearts & Sparkles Canvas -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Celebratory Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Main Mobile Card Container -->
+  <main class="relative z-10 w-full max-w-md mx-auto">
+    <div class="glass-card rounded-[2rem] p-6 sm:p-8 transition-all duration-500 relative overflow-hidden">
+
+      <!-- Decorative Top Accent Bar (Pink to Blue) -->
+      <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-pink-400 via-purple-300 to-sky-400"></div>
+
+      <!-- Step Progress Indicator Dots -->
+      <div class="flex items-center justify-between mb-6 pt-1">
+        <div class="flex items-center space-x-2">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-pink-400 animate-pulse"></span>
+          <span class="text-xs font-semibold tracking-wider uppercase text-slate-500" id="stepLabel">
+            A Note From My Heart • 1/3
+          </span>
+        </div>
+
+        <div class="flex items-center space-x-1.5" aria-label="Progress Dots">
+          <div id="dot1" class="h-2 w-6 rounded-full bg-gradient-to-r from-pink-400 to-sky-400 transition-all duration-300"></div>
+          <div id="dot2" class="h-2 w-2 rounded-full bg-pink-200 transition-all duration-300"></div>
+          <div id="dot3" class="h-2 w-2 rounded-full bg-sky-200 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           PAGE 1: INTRODUCTION & ACCOUNTABILITY
+      =========================================== -->
+      <section id="page1" class="page-step active flex-col items-center text-center">
+        <!-- Cute Pink & Blue Envelope + Heart SVG Illustration -->
+        <div class="relative mb-5 mt-1 float-slow">
+          <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-pink-100 via-white to-sky-100 flex items-center justify-center shadow-inner border border-white">
+            <svg class="w-14 h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Soft Blue Envelope Back -->
+              <rect x="8" y="18" width="48" height="36" rx="8" fill="#89CFF0" />
+              <!-- Letter Card Inside -->
+              <rect x="14" y="10" width="36" height="32" rx="5" fill="#FFF9FC" stroke="#FFC1DC" stroke-width="2" />
+              <!-- Pink Heart on Letter -->
+              <path d="M32 31C32 31 23 25.2 23 19.8C23 17.1 25.1 15 27.7 15C29.4 15 31 15.9 32 17.3C33 15.9 34.6 15 36.3 15C38.9 15 41 17.1 41 19.8C41 25.2 32 31 32 31Z" fill="#FF7EB3"/>
+              <!-- Envelope Flaps -->
+              <path d="M8 22L32 38L56 22V46C56 50.4183 52.4183 54 48 54H16C11.5817 54 8 50.4183 8 46V22Z" fill="#A7D8F9" fill-opacity="0.9"/>
+              <path d="M8 50L26 35M56 50L38 35" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="absolute -top-1 -right-1 text-xl">✨</span>
+          <span class="absolute -bottom-1 -left-1 text-lg">🌸</span>
+        </div>
+
+        <!-- Badge -->
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-pink-100 to-sky-100 text-pink-600 border border-pink-200/70 mb-4 shadow-sm">
+          <span>🕰️</span> Overdue Since June 2025
+        </span>
+
+        <!-- Main Exact Prompt Text -->
+        <h1 class="text-xl sm:text-2xl font-bold text-slate-800 leading-relaxed mb-4 px-1">
+          “Hello there, ik it's too much late... this should be done on <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-sky-500">June 2025</span>, but I want to apologise now and don't want to keep any grudges.”
+        </h1>
+
+        <!-- Accountability & Guilt Sub-card (For mistakes & lack of efforts) -->
+        <div class="guilt-box rounded-2xl p-4 mb-6 text-left shadow-sm">
+          <p class="text-sm sm:text-[15px] text-slate-700 leading-relaxed font-medium">
+            I know maine bohot galtiya kari thi and didn't put in the efforts you truly deserved. Looking back, I feel really guilty for everything, and I just wanted to say this honestly from the bottom of my heart. 💗💙
+          </p>
+        </div>
+
+        <!-- Continue Button -->
+        <button
+          onclick="goToPage(2)"
+          class="btn-pink-blue w-full py-4 px-6 rounded-2xl text-white font-bold text-base sm:text-lg tracking-wide flex items-center justify-center gap-2 focus:outline-none"
+        >
+          <span>Continue</span>
+          <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </button>
+      </section>
+
+      <!-- ==========================================
+           PAGE 2: THE APOLOGY QUESTION (YES / NO)
+      =========================================== -->
+      <section id="page2" class="page-step flex-col items-center text-center">
+        <!-- Cute Apologetic Icon -->
+        <div class="relative mb-5 mt-1 float-slow">
+          <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-sky-100 via-white to-pink-100 flex items-center justify-center shadow-inner border border-white">
+            <span class="text-5xl">🌷</span>
+          </div>
+          <span class="absolute -top-1 -right-1 text-xl">💌</span>
+          <span class="absolute -bottom-1 -left-1 text-lg">🫧</span>
+        </div>
+
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-sky-100 to-pink-100 text-sky-600 border border-sky-200/70 mb-3 shadow-sm">
+          Honest Question
+        </span>
+
+        <!-- Main Question -->
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 leading-snug mb-3 px-2">
+          I'm sorry... would you accept my apologies?
+        </h2>
+
+        <p class="text-sm text-slate-500 font-medium mb-7 max-w-xs">
+          No pressure at all, whatever you choose, I completely respect your feelings.
+        </p>
+
+        <!-- Two Touch-Friendly Option Buttons -->
+        <div class="w-full flex flex-col gap-3.5">
+          <!-- Option 1: YES -->
+          <button
+            onclick="handleAnswer('yes')"
+            class="btn-pink-blue w-full py-4 px-6 rounded-2xl text-white font-bold text-lg flex items-center justify-center gap-2.5 shadow-lg focus:outline-none"
+          >
+            <span>Yes, I accept</span>
+            <span class="text-xl">💗</span>
+          </button>
+
+          <!-- Option 2: NO -->
+          <button
+            onclick="handleAnswer('no')"
+            class="btn-soft-no w-full py-4 px-6 rounded-2xl font-bold text-lg flex items-center justify-center gap-2.5 focus:outline-none"
+          >
+            <span>No</span>
+            <span class="text-xl">💙</span>
+          </button>
+        </div>
+
+        <!-- Back button in case they want to re-read Page 1 -->
+        <button
+          onclick="goToPage(1)"
+          class="mt-5 text-xs font-semibold text-slate-400 hover:text-slate-600 transition-colors py-1 px-3 rounded-lg"
+        >
+          ← Read previous note again
+        </button>
+      </section>
+
+      <!-- ==========================================
+           PAGE 3: CLOSURE MESSAGE (DYNAMIC YES / NO)
+      =========================================== -->
+      <section id="page3" class="page-step flex-col items-center text-center">
+
+        <!-- STATE A: IF "YES" WAS SELECTED -->
+        <div id="yesResult" class="hidden flex-col items-center w-full">
+          <!-- Warm Hugging Icon Badge -->
+          <div class="relative my-3">
+            <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-pink-100 via-white to-sky-100 flex items-center justify-center shadow-md border-2 border-white">
+              <span class="giant-hug-emoji" role="img" aria-label="Warm Hug">🫂</span>
+            </div>
+            <span class="absolute -top-2 -right-2 text-2xl animate-bounce">🎉</span>
+            <span class="absolute -bottom-1 -left-2 text-2xl animate-pulse">💖</span>
+          </div>
+
+          <span class="inline-flex items-center gap-1 px-3.5 py-1 rounded-full text-xs font-bold bg-pink-100 text-pink-600 border border-pink-200 mt-2 mb-4">
+            ✨ Grudges Cleared ✨
+          </span>
+
+          <!-- Exact Yes Message Requested -->
+          <div class="guilt-box rounded-2xl p-5 mb-6 w-full shadow-sm">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-800 leading-relaxed">
+              “Thankyou for accepting and also have a happy life 🫂”
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-2.5 font-medium">
+              Wishing you peace, smiles, and all the happiness in the world. 🌸💙
+            </p>
+          </div>
+
+          <!-- Extra Confetti & Replay Buttons -->
+          <div class="flex flex-col sm:flex-row gap-3 w-full">
+            <button
+              onclick="launchCelebrationConfetti()"
+              class="btn-pink-blue flex-1 py-3.5 px-5 rounded-2xl text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2"
+            >
+              <span>More Confetti 🎉</span>
+            </button>
+            <button
+              onclick="resetFlow()"
+              class="btn-soft-no py-3.5 px-5 rounded-2xl font-semibold text-sm sm:text-base flex items-center justify-center gap-1.5"
+            >
+              <span>Start Over ↺</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STATE B: IF "NO" WAS SELECTED -->
+        <div id="noResult" class="hidden flex-col items-center w-full">
+          <!-- HUGE Animated Sad Emoji as requested ("If no then sad wala bada emoji daalna") -->
+          <div class="relative my-3 flex flex-col items-center">
+            <div class="w-36 h-36 rounded-full bg-gradient-to-b from-sky-100/90 via-white to-pink-100/80 flex items-center justify-center shadow-md border-2 border-white relative">
+              <span id="bigSadEmoji" class="giant-sad-emoji" role="img" aria-label="Big Sad Face">🥺</span>
+              <span class="tear-drop">💧</span>
+            </div>
+            <!-- Toggle between 🥺 and 😢 subtly or show companion badge -->
+            <span class="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-700 border border-sky-200">
+              <span>😢</span> I Understand & Respect That
+            </span>
+          </div>
+
+          <!-- Exact No Message Requested -->
+          <div class="guilt-box rounded-2xl p-5 my-4 w-full shadow-sm">
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-800 leading-relaxed">
+              “That’s okay thankyou for giving me best days of my life have a happy life ahead”
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-2.5 font-medium">
+              Always wishing you the very best wherever life takes you. 🤍🌷
+            </p>
+          </div>
+
+          <!-- Replay / Back Option -->
+          <button
+            onclick="resetFlow()"
+            class="mt-2 btn-soft-no w-full py-3.5 px-5 rounded-2xl font-semibold text-sm sm:text-base flex items-center justify-center gap-2"
+          >
+            <span>← Back to Start</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- Subtle Footer -->
+      <div class="mt-6 pt-3 border-t border-pink-200/40 flex items-center justify-center gap-1.5 text-[11px] font-medium text-slate-400">
+        <span>Made with</span>
+        <span class="text-pink-400">💗</span>
+        <span>&amp;</span>
+        <span class="text-sky-400">💙</span>
+        <span>• Sincere Apologies</span>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    /* ==========================================================
+       PAGE NAVIGATION & INTERACTIVE LOGIC
+    ========================================================== */
+    let currentStep = 1;
+    let sadEmojiInterval = null;
+
+    function updateProgressUI(step) {
+      const label = document.getElementById('stepLabel');
+      const dot1 = document.getElementById('dot1');
+      const dot2 = document.getElementById('dot2');
+      const dot3 = document.getElementById('dot3');
+
+      const titles = {
+        1: 'A Note From My Heart • 1/3',
+        2: 'My Apology • 2/3',
+        3: 'With Warm Wishes • 3/3'
+      };
+      label.textContent = titles[step] || '';
+
+      // Reset dots
+      [dot1, dot2, dot3].forEach((dot, idx) => {
+        if (idx + 1 === step) {
+          dot.className = 'h-2 w-6 rounded-full bg-gradient-to-r from-pink-400 to-sky-400 transition-all duration-300';
+        } else if (idx + 1 < step) {
+          dot.className = 'h-2 w-2.5 rounded-full bg-pink-400 transition-all duration-300';
+        } else {
+          dot.className = 'h-2 w-2 rounded-full bg-sky-200 transition-all duration-300';
+        }
+      });
+    }
+
+    function goToPage(targetStep) {
+      if (targetStep === currentStep) return;
+
+      const currentEl = document.getElementById(`page${currentStep}`);
+      const nextEl = document.getElementById(`page${targetStep}`);
+
+      // Fade out current step
+      currentEl.classList.add('fade-out');
+
+      setTimeout(() => {
+        currentEl.classList.remove('active', 'fade-out');
+        nextEl.classList.add('active');
+        currentStep = targetStep;
+        updateProgressUI(targetStep);
+      }, 280);
+    }
+
+    function handleAnswer(choice) {
+      const yesBlock = document.getElementById('yesResult');
+      const noBlock = document.getElementById('noResult');
+
+      if (sadEmojiInterval) {
+        clearInterval(sadEmojiInterval);
+        sadEmojiInterval = null;
+      }
+
+      if (choice === 'yes') {
+        yesBlock.classList.remove('hidden');
+        yesBlock.classList.add('flex');
+        noBlock.classList.add('hidden');
+        noBlock.classList.remove('flex');
+
+        // Trigger vibrant Pink & Blue Confetti immediately
+        launchCelebrationConfetti();
+      } else {
+        noBlock.classList.remove('hidden');
+        noBlock.classList.add('flex');
+        yesBlock.classList.add('hidden');
+        yesBlock.classList.remove('flex');
+
+        // Animate between expressive big sad emojis (🥺 and 😢)
+        const sadEl = document.getElementById('bigSadEmoji');
+        const sadFaces = ['🥺', '😢', '🥺', '😞'];
+        let faceIdx = 0;
+        sadEl.textContent = sadFaces[0];
+        sadEmojiInterval = setInterval(() => {
+          faceIdx = (faceIdx + 1) % sadFaces.length;
+          sadEl.textContent = sadFaces[faceIdx];
+        }, 2200);
+      }
+
+      goToPage(3);
+    }
+
+    function resetFlow() {
+      if (sadEmojiInterval) {
+        clearInterval(sadEmojiInterval);
+        sadEmojiInterval = null;
+      }
+      goToPage(1);
+    }
+
+    /* ==========================================================
+       CONFETTI ENGINE (PINK, BABY BLUE, LAVENDER & WHITE)
+    ========================================================== */
+    const confettiCanvas = document.getElementById('confettiCanvas');
+    const cCtx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+    let confettiAnimating = false;
+
+    function resizeConfettiCanvas() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+
+    const confettiColors = [
+      '#ff7eb3', // Pastel Rose Pink
+      '#ffafd2', // Soft Baby Pink
+      '#7cc6fe', // Baby Blue
+      '#a3daff', // Sky Blue
+      '#c8b6ff', // Soft Lavender
+      '#ffffff', // Pure White
+      '#ffe5ec'  // Blush
+    ];
+
+    function createConfettiBurst(count = 130) {
+      const w = confettiCanvas.width;
+      const h = confettiCanvas.height;
+
+      for (let i = 0; i < count; i++) {
+        const fromLeft = i % 2 === 0;
+        confettiParticles.push({
+          x: fromLeft ? w * 0.15 : w * 0.85,
+          y: h * 0.55,
+          vx: (fromLeft ? 1 : -1) * (Math.random() * 9 + 3) + (Math.random() - 0.5) * 4,
+          vy: -(Math.random() * 14 + 7),
+          size: Math.random() * 8 + 6,
+          color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+          rotation: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 11,
+          gravity: 0.26 + Math.random() * 0.1,
+          drag: 0.985,
+          wobble: Math.random() * 10,
+          wobbleSpeed: 0.08 + Math.random() * 0.06,
+          shape: Math.random() > 0.35 ? 'rect' : 'circle',
+          opacity: 1
+        });
+      }
+    }
+
+    function animateConfetti() {
+      if (confettiParticles.length === 0) {
+        confettiAnimating = false;
+        cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        return;
+      }
+
+      confettiAnimating = true;
+      cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+      for (let i = confettiParticles.length - 1; i >= 0; i--) {
+        const p = confettiParticles[i];
+        p.x += p.vx + Math.sin(p.wobble) * 1.2;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.vx *= p.drag;
+        p.wobble += p.wobbleSpeed;
+        p.rotation += p.rotationSpeed;
+
+        if (p.y > confettiCanvas.height * 0.78) {
+          p.opacity -= 0.025;
+        }
+
+        cCtx.save();
+        cCtx.globalAlpha = Math.max(0, p.opacity);
+        cCtx.translate(p.x, p.y);
+        cCtx.rotate((p.rotation * Math.PI) / 180);
+        cCtx.fillStyle = p.color;
+
+        if (p.shape === 'circle') {
+          cCtx.beginPath();
+          cCtx.arc(0, 0, p.size * 0.5, 0, Math.PI * 2);
+          cCtx.fill();
+        } else {
+          cCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+        }
+        cCtx.restore();
+
+        if (p.y > confettiCanvas.height + 40 || p.opacity <= 0) {
+          confettiParticles.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(animateConfetti);
+    }
+
+    function launchCelebrationConfetti() {
+      resizeConfettiCanvas();
+      createConfettiBurst(110);
+      setTimeout(() => createConfettiBurst(70), 300);
+      if (!confettiAnimating) {
+        animateConfetti();
+      }
+    }
+
+    /* ==========================================================
+       AMBIENT FLOATING PASTEL HEARTS & BUBBLES CANVAS
+    ========================================================== */
+    const bgCanvas = document.getElementById('bgCanvas');
+    const bgCtx = bgCanvas.getContext('2d');
+    let bgItems = [];
+
+    function initBgParticles() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+      bgItems = [];
+
+      const count = window.innerWidth < 640 ? 18 : 28;
+      for (let i = 0; i < count; i++) {
+        bgItems.push({
+          x: Math.random() * bgCanvas.width,
+          y: Math.random() * bgCanvas.height,
+          size: Math.random() * 10 + 6,
+          speedY: -(Math.random() * 0.45 + 0.2),
+          speedX: (Math.random() - 0.5) * 0.35,
+          alpha: Math.random() * 0.35 + 0.15,
+          isHeart: i % 2 === 0,
+          color: i % 3 === 0 ? '#ff85b3' : '#7cc6fe'
+        });
+      }
+    }
+
+    function drawMiniHeart(ctx, x, y, size, color, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      const topCurveHeight = size * 0.3;
+      ctx.moveTo(x, y + topCurveHeight);
+      ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+      ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + (size + topCurveHeight) / 1.4, x, y + size);
+      ctx.bezierCurveTo(x, y + (size + topCurveHeight) / 1.4, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+      ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animateBg() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+      for (const item of bgItems) {
+        item.y += item.speedY;
+        item.x += item.speedX;
+
+        if (item.y < -25) {
+          item.y = bgCanvas.height + 20;
+          item.x = Math.random() * bgCanvas.width;
+        }
+        if (item.x < -25) item.x = bgCanvas.width + 20;
+        if (item.x > bgCanvas.width + 25) item.x = -20;
+
+        if (item.isHeart) {
+          drawMiniHeart(bgCtx, item.x, item.y, item.size, item.color, item.alpha);
+        } else {
+          bgCtx.save();
+          bgCtx.globalAlpha = item.alpha;
+          bgCtx.fillStyle = item.color;
+          bgCtx.beginPath();
+          bgCtx.arc(item.x, item.y, item.size * 0.38, 0, Math.PI * 2);
+          bgCtx.fill();
+          bgCtx.restore();
+        }
+      }
+
+      requestAnimationFrame(animateBg);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeConfettiCanvas();
+      initBgParticles();
+    });
+
+    window.onload = function () {
+      resizeConfettiCanvas();
+      initBgParticles();
+      animateBg();
+    };
+  </script>
+</body>
+</html>
